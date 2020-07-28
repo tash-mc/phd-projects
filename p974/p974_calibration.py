@@ -17,60 +17,7 @@ for r, d, f in os.walk(path):
 
 median_intensity = []
 
-for file_name in files:
 
-    f = h5py.File(file_name, 'r')
-
-    f.keys()
-
-    freq = np.array(f.get('beam_0/band_SB5/astronomy_data/frequency'))
-    intensity = np.array(f.get('beam_0/band_SB5/astronomy_data/data'))
-
-    # Data array shape is given by [spectral dump][][polarisations][channels][]
-
-    intensity_median = []
-    intensity_max = []
-    off_source_pol1 = []
-    off_source_pol2 = []
-    chan_len = len(intensity[0][0][0])
-    p_onoff = []
-    median_intensity =[]
-
-    # Cycle through all spectral dumps
-    for dump in range(0,len(intensity)):
-
-        # Using the dumps between this value as the off source spectra
-        if 2 < dump < 10:
-
-            off_source_pol1.append(np.reshape(intensity[dump][0][0], chan_len))
-            off_source_pol2.append(np.reshape(intensity[dump][0][1], chan_len))
-
-    off_source_pol1 = np.array(off_source_pol1)
-    off_source_pol2 = np.array(off_source_pol2)
-
-    mean_off_pol1 = np.mean(off_source_pol1, axis=0)
-    mean_off_pol2 = np.mean(off_source_pol2, axis=0)
-
-    for dump in range(0, len(intensity)):
-
-        on_source_pol1 = np.reshape(intensity[dump][0][0], chan_len)
-        on_source_pol2 = np.reshape(intensity[dump][0][1], chan_len)
-
-        i_on = (on_source_pol1 + on_source_pol2)/2
-        i_off = (mean_off_pol1 + mean_off_pol2)/2
-
-        p_onoff.append((i_on - i_off)/i_off)
-
-        median_intensity.append(np.median(p_onoff))
-
-    median_intensity = np.array(median_intensity)
-
-    plt.plot(range(0,len(intensity)),median_intensity, linewidth=0.5)
-    plt.axes(ylabel="Signal Strength [Counts]", xlabel="Spectral Dump Number")
-    plt.title("bandpasscal_1934scans")
-    plt.savefig("bandpasscal_1934scans.png")
-
-"""
 for file_name in files:
 
     f = h5py.File(file_name, 'r')
@@ -133,11 +80,11 @@ for file_name in files:
     plt.savefig(file_name.split("/")[1]+"_bandpasscal.png")
     plt.show()
 
-
-plt.axes(ylabel="Signal Strength [Counts]", xlabel="1934 Observation Files")
-plt.plot(range(0, len(files)), median_intensity, linewidth=0.5)
-plt.title("Plot of Average Signal Strength over Observations of 1934")
-plt.savefig("Time Average.png")
+    """
+    plt.axes(ylabel="Signal Strength [Counts]", xlabel="1934 Observation Files")
+    plt.plot(range(0, len(files)), median_intensity, linewidth=0.5)
+    plt.title("Plot of Average Signal Strength over Observations of 1934")
+    plt.savefig("Time Average.png")
 
     
     src_on_pol2 = np.reshape(intensity[56][0][1], 131072)
@@ -182,5 +129,4 @@ plt.savefig("Time Average.png")
     plt.title(file_name+ " Ssys value of: " + str(S_sys))
     plt.legend()
     plt.savefig("1934_DEC.png")
-
 """
